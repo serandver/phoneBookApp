@@ -37,8 +37,8 @@
       <div class="header clearfix">
         <nav>
           <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active"><a href="signup.html">Sign up</a></li>
-            <li role="presentation"><a href="signin.html">Sign in</a></li>
+            <li role="presentation" class="active"><a href="signin.jsp">Sign in</a></li>
+            <li role="presentation"><a href="signup.jsp">Sign up</a></li>
           </ul>
         </nav>
         <h3 class="text-muted">Lardi test task</h3>
@@ -47,7 +47,7 @@
       <div class="jumbotron">
         <h1>Phone book application</h1>
         <p class="lead">Here you can keep all your contacts!</p>
-        <p><a class="btn btn-lg btn-success" href="signin.html" role="button">Sign in</a></p>
+        <p><a class="btn btn-lg btn-success" href="signin.jsp" role="button">Sign in</a></p>
       </div>
 
       <footer class="footer">

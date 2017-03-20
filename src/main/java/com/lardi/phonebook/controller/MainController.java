@@ -1,43 +1,64 @@
 package com.lardi.phonebook.controller;
 
+import com.lardi.phonebook.entity.User;
+import com.lardi.phonebook.service.SecurityService;
+import com.lardi.phonebook.service.UserService;
+import com.lardi.phonebook.validator.UserValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 @Controller
-// мапим наш REST на /myservice
-@RequestMapping(value = "/myservice")
 public class MainController {
-    // этот метод будет принимать время методом GET и на его основе
-    // отвечать клиенту
-    @RequestMapping(value= "/{time}", method = RequestMethod.GET)
-    @ResponseBody
-    public MyDataObject getMyData(@PathVariable long time) {
-        return new MyDataObject(Calendar.getInstance(), "Это ответ метода GET!");
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private SecurityService securityService;
+
+    @Autowired
+    private UserValidator userValidator;
+
+    @RequestMapping(value = "/registration", method = RequestMethod.GET)
+    public String registration(Model model) {
+        model.addAttribute("userForm", new User());
+
+        return "registration";
     }
 
-    // этот метод будет принимать Объект MyDataObject и отдавать его клиенту
-    // обычно метод PUT используют для сохранения либо для обновления объекта
-    @RequestMapping(method = RequestMethod.PUT)
-    @ResponseBody
-    public MyDataObject putMyData(@RequestBody MyDataObject md) {
-        return md;
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
+        userValidator.validate(userForm, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return "registration";
+        }
+
+        userService.save(userForm);
+
+        securityService.autologin(userForm.getLogin(), userForm.getPasswordConfirm());
+
+        return "redirect:/welcome";
     }
 
-    // этот метод будет методом POST отдавать объект MyDataObject
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
-    public MyDataObject postMyData() {
-        return new MyDataObject(Calendar.getInstance(), "это ответ метода POST!");
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(Model model, String error, String logout) {
+        if (error != null)
+            model.addAttribute("error", "Your username and password is invalid.");
+
+        if (logout != null)
+            model.addAttribute("message", "You have been logged out successfully.");
+
+        return "login";
     }
 
-    // этот метод будет принимать время методом DELETE
-    // и на его основе можно удалит объект
-    @RequestMapping(value= "/{time}", method = RequestMethod.DELETE)
-    @ResponseBody
-    public MyDataObject deleteMyData(@PathVariable long time) {
-        return new MyDataObject(Calendar.getInstance(), "Это ответ метода DELETE!");
+    @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
+    public String welcome(Model model) {
+        return "welcome";
     }
 }

@@ -124,4 +124,37 @@ public class Contact {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Contact contact = (Contact) o;
+
+        if (id != contact.id) return false;
+        if (!user.equals(contact.user)) return false;
+        if (!firstName.equals(contact.firstName)) return false;
+        if (!lastName.equals(contact.lastName)) return false;
+        if (!patronymic.equals(contact.patronymic)) return false;
+        if (!mobilePhoneNumber.equals(contact.mobilePhoneNumber)) return false;
+        if (homePhoneNumber != null ? !homePhoneNumber.equals(contact.homePhoneNumber) : contact.homePhoneNumber != null)
+            return false;
+        if (address != null ? !address.equals(contact.address) : contact.address != null) return false;
+        return email != null ? email.equals(contact.email) : contact.email == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + user.hashCode();
+        result = 31 * result + firstName.hashCode();
+        result = 31 * result + lastName.hashCode();
+        result = 31 * result + patronymic.hashCode();
+        result = 31 * result + mobilePhoneNumber.hashCode();
+        result = 31 * result + (homePhoneNumber != null ? homePhoneNumber.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        return result;
+    }
 }
