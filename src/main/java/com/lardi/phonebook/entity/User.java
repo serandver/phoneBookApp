@@ -15,8 +15,8 @@ public class User {
     @Column(name = "user_id", length = 6, nullable = false)
     private long id;
 
-    @Column(name = "login")
-    private String login;
+    @Column(name = "userName")
+    private String userName;
 
     @Column(name = "password")
     private String password;
@@ -27,10 +27,8 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Contact> contacts;
 
-    private String passwordConfirm;
-
-    public User(String login, String password) {
-        this.login = login;
+    public User(String userName, String password) {
+        this.userName = userName;
         this.password = password;
     }
 
@@ -40,8 +38,8 @@ public class User {
     public User() {
     }
 
-    public User(String login, String password, String fio, Set<Contact> contacts) {
-        this.login = login;
+    public User(String userName, String password, String fio, Set<Contact> contacts) {
+        this.userName = userName;
         this.password = password;
         this.fio = fio;
         this.contacts = contacts;
@@ -56,12 +54,12 @@ public class User {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -88,15 +86,6 @@ public class User {
         this.contacts = contacts;
     }
 
-    @Transient
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -105,7 +94,7 @@ public class User {
         User user = (User) o;
 
         if (id != user.id) return false;
-        if (!login.equals(user.login)) return false;
+        if (!userName.equals(user.userName)) return false;
         if (!password.equals(user.password)) return false;
         if (!fio.equals(user.fio)) return false;
         return contacts != null ? contacts.equals(user.contacts) : user.contacts == null;
@@ -114,7 +103,7 @@ public class User {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + login.hashCode();
+        result = 31 * result + userName.hashCode();
         result = 31 * result + password.hashCode();
         result = 31 * result + fio.hashCode();
         result = 31 * result + (contacts != null ? contacts.hashCode() : 0);

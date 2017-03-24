@@ -19,7 +19,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan("com.lardi.phonebook")
-@PropertySource("classpath:app.properties")
+@PropertySource("classpath:application.properties")
 @EnableJpaRepositories("com.lardi.phonebook.repository")
 public class DataConfig {
 

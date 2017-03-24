@@ -30,12 +30,12 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public void delete(long id) {
+    public void deleteContact(long id) {
         repository.delete(id);
     }
 
     @Override
-    public List<Contact> getAll() {
+    public List<Contact> getAllContacts() {
         return repository.findAll();
     }
 }
