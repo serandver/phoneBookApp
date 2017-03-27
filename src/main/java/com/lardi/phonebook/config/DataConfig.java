@@ -23,10 +23,10 @@ import java.util.Properties;
 @EnableJpaRepositories("com.lardi.phonebook.repository")
 public class DataConfig {
 
-    private static final String PROP_DATABASE_DRIVER = "db.driver";
-    private static final String PROP_DATABASE_PASSWORD = "db.password";
-    private static final String PROP_DATABASE_URL = "db.url";
-    private static final String PROP_DATABASE_USERNAME = "db.username";
+    private static final String PROP_DATABASE_DRIVER = "spring.datasource.driver-class-name";
+    private static final String PROP_DATABASE_PASSWORD = "spring.datasource.password";
+    private static final String PROP_DATABASE_URL = "spring.datasource.url";
+    private static final String PROP_DATABASE_USERNAME = "spring.datasource.username";
     private static final String PROP_HIBERNATE_DIALECT = "db.hibernate.dialect";
     private static final String PROP_HIBERNATE_SHOW_SQL = "db.hibernate.show_sql";
     private static final String PROP_ENTITYMANAGER_PACKAGES_TO_SCAN = "db.entitymanager.packages.to.scan";

@@ -3,6 +3,7 @@ package com.lardi.phonebook.config;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class<?>[]{
@@ -12,12 +13,16 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class<?>[0];
+        return new Class<?>[]{
+                DataConfig.class
+        };
     }
 
     @Override
     protected String[] getServletMappings() {
-        return new String[0];
+        return new String[] { "/" };
     }
+
+
 }
 

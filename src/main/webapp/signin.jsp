@@ -9,16 +9,16 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Narrow Jumbotron Template for Bootstrap</title>
+    <title>Signin Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../../../resources/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="resources/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../../../resources/static/css/jumbotron-narrow.css" rel="stylesheet">
+    <link href="resources/css/signin.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -34,25 +34,15 @@
   <body>
 
     <div class="container">
-      <div class="header clearfix">
-        <nav>
-          <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active"><a href="signin.jsp">Sign in</a></li>
-            <li role="presentation"><a href="signup.jsp">Sign up</a></li>
-          </ul>
-        </nav>
-        <h3 class="text-muted">Lardi test task</h3>
-      </div>
 
-      <div class="jumbotron">
-        <h1>Phone book application</h1>
-        <p class="lead">Here you can keep all your contacts!</p>
-        <p><a class="btn btn-lg btn-success" href="signin.jsp" role="button">Sign in</a></p>
-      </div>
-
-      <footer class="footer">
-        <p>&copy; 2017 Sergey Khomenko</p>
-      </footer>
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
 
     </div> <!-- /container -->
 
