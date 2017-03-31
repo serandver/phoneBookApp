@@ -8,8 +8,7 @@ import javax.persistence.*;
 public class Contact {
 
     @Id
-    @GeneratedValue(generator = "increment")
-    @GenericGenerator(name= "increment", strategy= "increment")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long contactId;
     private String firstName;
     private String lastName;
@@ -18,7 +17,9 @@ public class Contact {
     private String homePhoneNumber;
     private String address;
     private String email;
-    @ManyToOne
+
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "user_id")
     private User user;
 
 
