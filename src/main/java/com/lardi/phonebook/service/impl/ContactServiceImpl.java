@@ -1,13 +1,12 @@
 package com.lardi.phonebook.service.impl;
 
 import com.lardi.phonebook.entity.Contact;
-import com.lardi.phonebook.entity.User;
 import com.lardi.phonebook.repository.ContactRepository;
-import com.lardi.phonebook.repository.UserRepository;
 import com.lardi.phonebook.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,37 +15,31 @@ public class ContactServiceImpl implements ContactService{
     @Autowired
     private ContactRepository contactRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Override
-    public Contact addContact(Contact contact) {
-        return contactRepository.saveAndFlush(contact);
+    public List<Contact> getAllContacts(long userId) {
+        List<Contact> contactList = new ArrayList<>();
+        contactRepository.findAll().forEach(contactList::add);
+        return contactList;
     }
 
     @Override
-    public Contact getContactById(long id) {
-        return contactRepository.findOne(id);
+    public void addContact(Contact contact) {
+        contactRepository.save(contact);
     }
 
     @Override
-    public Contact editContact(Long id, Contact contact) {
-        return contactRepository.saveAndFlush(contact);
+    public Contact getContactById(long contactId) {
+        return contactRepository.findOne(contactId);
     }
 
     @Override
-    public void deleteContact(long id) {
-        contactRepository.delete(id);
+    public void editContact(Contact contact) {
+        contactRepository.save(contact);
     }
 
     @Override
-    public List<Contact> getAllContacts() {
-        return contactRepository.findAll();
+    public void deleteContact(long contactId) {
+        contactRepository.delete(contactId);
     }
 
-    @Override
-    public List<Contact> getUserContacts(Long userId) {
-        User user = userRepository.findOne(userId);
-        return contactRepository.findByUser(user);
-    }
 }

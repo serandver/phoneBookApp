@@ -39,19 +39,19 @@
         <h2 class="form-signin-heading">Please sign up</h2>
         <div class="form-group">
           <label for="userName" class="sr-only">Login</label>
-          <input type="text" class="form-control" id="userName" placeholder="Login" required autofocus>
+          <input type="text" class="form-control" userId="userName" placeholder="Login" required autofocus>
         </div>
         <div class="form-group">
           <label for="name" class="sr-only">Full name</label>
-          <input type="text" class="form-control" id="name" placeholder="Full name" required>
+          <input type="text" class="form-control" userId="name" placeholder="Full name" required>
         </div>
         <div class="form-group">
           <label for="inputPassword" class="sr-only">Your password</label>
-          <input type="password" id="inputPassword" class="form-control" placeholder="Your password" required>
+          <input type="password" userId="inputPassword" class="form-control" placeholder="Your password" required>
         </div>
         <div class="form-group">
           <label for="confirmPassword" class="sr-only">Confirm password</label>
-          <input type="password" id="inputPassword" class="form-control" placeholder="Confirm password" required>
+          <input type="password" userId="inputPassword" class="form-control" placeholder="Confirm password" required>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
       </form>

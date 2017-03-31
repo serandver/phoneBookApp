@@ -1,11 +1,10 @@
 package com.lardi.phonebook.repository;
 
 import com.lardi.phonebook.entity.Contact;
-import com.lardi.phonebook.entity.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface ContactRepository extends JpaRepository<Contact, Long> {
-    public List<Contact> findByUser (User user);
+public interface ContactRepository extends CrudRepository<Contact, Long> {
+    List<Contact> findByUserUserId (Long userId);
 }

@@ -5,41 +5,29 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "contacts")
 public class Contact {
 
     @Id
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name= "increment", strategy= "increment")
-    @Column(name = "contact_id")
-    private long id;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "user_id", nullable = false)
+    private long contactId;
+    private String firstName;
+    private String lastName;
+    private String patronymic;
+    private String mobilePhoneNumber;
+    private String homePhoneNumber;
+    private String address;
+    private String email;
+    @ManyToOne
     private User user;
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Column(name = "patronymic")
-    private String patronymic;
-
-    @Column(name = "phone_mobile")
-    private String mobilePhoneNumber;
-
-    @Column(name = "phone_home")
-    private String homePhoneNumber;
-
-    @Column(name = "address")
-    private String address;
-
-    @Column(name = "email")
-    private String email;
 
     public Contact() {
+    }
+
+    public Contact(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public Contact(User user, String firstName, String lastName, String patronymic, String mobilePhoneNumber, String homePhoneNumber, String address, String email) {
@@ -53,77 +41,63 @@ public class Contact {
         this.email = email;
     }
 
-    public long getId() {
-        return id;
-    }
 
-    public void setId(long id) {
-        this.id = id;
+    public long getContactId() {
+        return contactId;
     }
-
     public User getUser() {
         return user;
     }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public String getFirstName() {
         return firstName;
     }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
     }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getPatronymic() {
         return patronymic;
     }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
-
     public String getMobilePhoneNumber() {
         return mobilePhoneNumber;
     }
-
-    public void setMobilePhoneNumber(String mobilePhoneNumber) {
-        this.mobilePhoneNumber = mobilePhoneNumber;
-    }
-
     public String getHomePhoneNumber() {
         return homePhoneNumber;
     }
-
-    public void setHomePhoneNumber(String homePhoneNumber) {
-        this.homePhoneNumber = homePhoneNumber;
-    }
-
     public String getAddress() {
         return address;
     }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public String getEmail() {
         return email;
     }
 
+    public void setContactId(long contactId) {
+        this.contactId = contactId;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
+    }
+    public void setMobilePhoneNumber(String mobilePhoneNumber) {
+        this.mobilePhoneNumber = mobilePhoneNumber;
+    }
+    public void setHomePhoneNumber(String homePhoneNumber) {
+        this.homePhoneNumber = homePhoneNumber;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
     public void setEmail(String email) {
         this.email = email;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -132,7 +106,7 @@ public class Contact {
 
         Contact contact = (Contact) o;
 
-        if (id != contact.id) return false;
+        if (contactId != contact.contactId) return false;
         if (!user.equals(contact.user)) return false;
         if (!firstName.equals(contact.firstName)) return false;
         if (!lastName.equals(contact.lastName)) return false;
@@ -146,7 +120,7 @@ public class Contact {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (contactId ^ (contactId >>> 32));
         result = 31 * result + user.hashCode();
         result = 31 * result + firstName.hashCode();
         result = 31 * result + lastName.hashCode();

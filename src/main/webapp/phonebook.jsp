@@ -44,7 +44,7 @@
           </button>
           <a class="navbar-brand" href="#">My contacts</a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
+        <div userId="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="index.jsp">Sign out</a></li>
           </ul>

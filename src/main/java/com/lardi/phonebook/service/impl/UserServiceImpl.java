@@ -6,36 +6,39 @@ import com.lardi.phonebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService{
 
     @Autowired
-    private UserRepository repository;
-
-    @Override
-    public User addUser(User user) {
-        return repository.saveAndFlush(user);
-    }
-
-    @Override
-    public void deleteUser(long id) {
-        repository.delete(id);
-    }
-
-    @Override
-    public User getUserById(long id) {
-        return repository.findOne(id);
-    }
-
-    @Override
-    public User editUser(User user) {
-        return repository.saveAndFlush(user);
-    }
+    private UserRepository userRepository;
 
     @Override
     public List<User> getAllUsers() {
-        return repository.findAll();
+        List<User> userList = new ArrayList<>();
+        userRepository.findAll().forEach(userList::add);
+        return userList;
+    }
+
+    @Override
+    public void addUser(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
+    public User getUserByUserId(long userId) {
+        return userRepository.findOne(userId);
+    }
+
+    @Override
+    public void editUser(long userId, User user) {
+        userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUser(long userId) {
+        userRepository.delete(userId);
     }
 }
