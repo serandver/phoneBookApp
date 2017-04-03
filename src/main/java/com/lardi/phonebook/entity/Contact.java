@@ -18,7 +18,7 @@ public class Contact {
     private String address;
     private String email;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "user_id")
     private User user;
 
