@@ -35,13 +35,13 @@ public class Populator {
         Contact contact;
         for (int i=0; i<NUMBER_OF_USERS_AND_CONTACTS; i++) {
             contact = new Contact();
-            contact.setFirstName("Contact Name " + (i+1));
-            contact.setLastName("Contact Surname " + (i+1));
+            contact.setFirstName("Name " + (i+1));
+            contact.setLastName("Surname " + (i+1));
             contact.setPatronymic("Patronymic " + (i+1));
-            contact.setMobilePhoneNumber("Mobile phone +38(050)555-55-5" + (i+1));
-            contact.setHomePhoneNumber("Home phone +38(044)222-22-2" + (i+1));
+            contact.setMobilePhoneNumber("+38(050)555-55-5" + (i+1));
+            contact.setHomePhoneNumber("+38(044)222-22-2" + (i+1));
             contact.setEmail("email"+(i+1)+"@gmail.com");
-            contact.setAddress("Address: Kyiv, Peremogy av."+(i+1)+" flat "+(i+1));
+            contact.setAddress("Kyiv, Peremogy av."+(i+1)+" flat "+(i+1));
             user = userRepository.findOne((long) i+1);
             contact.setUser(user);
             contactRepository.save(contact);

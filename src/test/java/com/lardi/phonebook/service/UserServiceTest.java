@@ -33,7 +33,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testSaveBank() throws Exception {
+    public void testSaveUser() throws Exception {
         userService.addUser(UserUtil.createUser());
     }
 }

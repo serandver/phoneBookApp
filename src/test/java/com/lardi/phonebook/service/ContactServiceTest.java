@@ -33,7 +33,7 @@ public class ContactServiceTest {
     }
 
     @Test
-    public void testSaveBank() throws Exception {
+    public void testSaveContact() throws Exception {
         contactService.addContact(ContactUtil.createContact());
     }
 }
