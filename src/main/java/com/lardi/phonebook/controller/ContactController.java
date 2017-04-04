@@ -30,10 +30,10 @@ public class ContactController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/users/{userId}/contacts")
-    public void addContact (@RequestBody Contact contact, @PathVariable long userId) {
+    public Contact addContact (@RequestBody Contact contact, @PathVariable long userId) {
         User user = userService.getUserByUserId(userId);
         contact.setUser(user);
-        contactService.addContact(contact);
+        return contactService.addContact(contact);
     }
 
     @RequestMapping(method = RequestMethod.PUT,  value = "/users/{userId}/contacts/{contactId}")
