@@ -39,7 +39,7 @@
 
 
     $('body').on('click', 'button.edit-modal', function() {
-        console.log("Yahoo!");
+        console.log("Begin edit");
 
         var columnHeadings = $("thead th").map(function() {
             return $(this).text();
@@ -60,13 +60,14 @@
         for (var i=0; i<columnHeadings.length-2; i++) {
             var formGroup = $('<div class="form-group"></div>');
             formGroup.append('<label for="'+columnHeadings[i]+'">'+columnHeadings[i]+'</label>');
-            formGroup.append('<input class="form-control" name="'+columnHeadings[i]+i+'" id="'+columnHeadings[i]+i+'" value="'+columnValues[i]+'" />');
+            formGroup.append('<input class="form-control" name=modal"'+columnHeadings[i]+'" id=modal"'+columnHeadings[i]+'" value="'+columnValues[i]+'" />');
             console.log(formGroup);
             modalForm.append(formGroup);
         }
 
         modalBody.append(modalForm);
         $('.modal-body').html(modalBody);
+        
     });
 
 
@@ -81,8 +82,6 @@
             email: $("#inputEmail").val(),
             user: currentUser
         };
-
-        console.log(contact);
 
         $.ajax({
             url: '/users/'+currentUserId+'/contacts',
@@ -102,6 +101,8 @@
                     "<td>"+rp.homePhoneNumber+"</td>"+
                     "<td>"+rp.address+"</td>"+
                     "<td>"+rp.email+"</td>"+
+                    "<td><button class=\"btn btn-success btn-sm edit-modal\" data-toggle=\"modal\" data-target=\"#editModal\" contenteditable=\"false\">Edit</button></td>"+
+                    "<td><button class=\"btn btn-success btn-sm\">Delete</button></td>"+
                     "</tr>");
             }
         });

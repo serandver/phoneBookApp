@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class Populator {
 
     //    should be less than 10
-    private static final int NUMBER_OF_USERS_AND_CONTACTS = 5;
+    private static final int NUMBER_OF_CONTACTS = 5;
 
     @Autowired
     private UserRepository userRepository;
@@ -20,20 +20,17 @@ public class Populator {
     private ContactRepository contactRepository;
 
     private void populateUsers() {
-        User user;
-        for (int i=0; i<NUMBER_OF_USERS_AND_CONTACTS; i++) {
-            user = new User();
-            user.setUserName("userLogin " + (i+1));
-            user.setPassword("userPassword " + (i+1));
-            user.setFio("userNameAndSurname " + (i+1));
-            userRepository.save(user);
-        }
+        User user = new User();
+        user.setUserName("userLogin");
+        user.setPassword("userPassword");
+        user.setFio("userNameAndSurname");
+        userRepository.save(user);
     }
 
     private void populateContacts() {
-        User user;
+        User user = userRepository.findOne((long)1);;
         Contact contact;
-        for (int i=0; i<NUMBER_OF_USERS_AND_CONTACTS; i++) {
+        for (int i = 0; i< NUMBER_OF_CONTACTS; i++) {
             contact = new Contact();
             contact.setFirstName("Contact Name " + (i+1));
             contact.setLastName("Contact Surname " + (i+1));
@@ -42,7 +39,6 @@ public class Populator {
             contact.setHomePhoneNumber("Home phone +38(044)222-22-2" + (i+1));
             contact.setEmail("email"+(i+1)+"@gmail.com");
             contact.setAddress("Address: Kyiv, Peremogy av."+(i+1)+" flat "+(i+1));
-            user = userRepository.findOne((long)i);
             contact.setUser(user);
             contactRepository.save(contact);
         }
@@ -53,7 +49,7 @@ public class Populator {
         populateContacts();
     }
 
-    public static int getNumberOfUsersAndContacts() {
-        return NUMBER_OF_USERS_AND_CONTACTS;
+    public static int getNumberOfContacts() {
+        return NUMBER_OF_CONTACTS;
     }
 }
