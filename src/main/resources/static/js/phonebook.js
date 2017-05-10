@@ -15,7 +15,6 @@
             url: '/users/'+currentUserId+'/contacts',
             type: 'GET',
             success: function (rp) {
-                console.log(rp);
                 for (var i=0; i<rp.length; i++) {
                     $(".table-striped > tbody").append(
                         "<tr>"+
@@ -39,37 +38,94 @@
 
 
     $('body').on('click', 'button.edit-modal', function() {
-        console.log("Begin edit");
 
         var columnHeadings = $("thead th").map(function() {
             return $(this).text();
         }).get();
-        console.log(columnHeadings);
 
         columnHeadings.pop();
 
         var columnValues = $(this).parent().siblings().map(function() {
             return $(this).text();
         }).get();
-        console.log(columnValues);
 
         var modalBody = $('<div id="modalContent"></div>');
-
         var modalForm = $('<form role="form" id="editContactForm"></form>');
 
-        for (var i=0; i<columnHeadings.length-2; i++) {
+        for (var i=0; i<columnHeadings.length-1; i++) {
             var formGroup = $('<div class="form-group"></div>');
-            formGroup.append('<label for="'+columnHeadings[i]+'">'+columnHeadings[i]+'</label>');
-            formGroup.append('<input class="form-control" name=modal"'+columnHeadings[i]+'" id=modal"'+columnHeadings[i]+'" value="'+columnValues[i]+'" />');
-            console.log(formGroup);
+            if (i != 0) {
+                formGroup.append('<label for="column'+i+'">'+columnHeadings[i]+'</label>');
+                formGroup.append('<input class="form-control" name=column'+i+' id=column'+i+' value="'+columnValues[i]+'" />');
+            }
+            else {
+                formGroup.append('<label for="column'+i+'">'+columnHeadings[i]+'</label>');
+                formGroup.append('<p class="form-control-static" id=column'+i+'>'+columnValues[i]+'</p>');
+            }
             modalForm.append(formGroup);
         }
 
         modalBody.append(modalForm);
         $('.modal-body').html(modalBody);
-        
+
+        var contactForEditing = {
+            contactId: $("#column0").text(),
+            firstName: $("#column1").val(),
+            lastName:$("#column2").val(),
+            patronymic:$("#column3").val(),
+            mobilePhoneNumber: $("#column4").val(),
+            homePhoneNumber:$("#column5").val(),
+            address:$("#column6").val(),
+            email: $("#column7").val(),
+            user: currentUser
+        };
+
+        console.log("contact for editing: ");
+        console.log(contactForEditing);
     });
 
+    $('#editModal').on('click', '#editContact', function() {
+
+        // $("#editContact").click(function () {
+        var editedContact = {
+            contactId: $("#column0").text(),
+            firstName: $("#column1").val(),
+            lastName:$("#column2").val(),
+            patronymic:$("#column3").val(),
+            mobilePhoneNumber: $("#column4").val(),
+            homePhoneNumber:$("#column5").val(),
+            address:$("#column6").val(),
+            email: $("#column7").val(),
+            user: currentUser
+        };
+
+        console.log("edited contact before sending to database: ");
+        console.log(editedContact);
+
+        $.ajax({
+            url: '/users/'+currentUserId+'/contacts/'+editedContact.contactId,
+            type: 'PUT',
+            dataType: 'json',
+            data: JSON.stringify(editedContact),
+            contentType: 'application/json',
+            success: function (rp) {
+                console.log("edited contact returned from database: ");
+                console.log(rp);
+                $(".table-striped > tbody:first-child").has(rp.contactId).html("<tr>"+
+                    "<td>"+rp.contactId+"</td>"+
+                    "<td>"+rp.firstName+"</td>"+
+                    "<td>"+rp.lastName+"</td>"+
+                    "<td>"+rp.patronymic+"</td>"+
+                    "<td>"+rp.mobilePhoneNumber+"</td>"+
+                    "<td>"+rp.homePhoneNumber+"</td>"+
+                    "<td>"+rp.address+"</td>"+
+                    "<td>"+rp.email+"</td>"+
+                    "<td><button class=\"btn btn-success btn-sm edit-modal\" data-toggle=\"modal\" data-target=\"#editModal\" contenteditable=\"false\">Edit</button></td>"+
+                    "<td><button class=\"btn btn-success btn-sm\">Delete</button></td>"+
+                    "</tr>");
+            }
+        });
+    });
 
     $("#addContact").click(function () {
         var contact = {
@@ -90,7 +146,6 @@
             data: JSON.stringify(contact),
             contentType: 'application/json',
             success: function (rp) {
-                console.log(rp);
                 $(".table-striped > tbody tr:last").after(
                     "<tr>"+
                     "<td>"+rp.contactId+"</td>"+
@@ -103,7 +158,8 @@
                     "<td>"+rp.email+"</td>"+
                     "<td><button class=\"btn btn-success btn-sm edit-modal\" data-toggle=\"modal\" data-target=\"#editModal\" contenteditable=\"false\">Edit</button></td>"+
                     "<td><button class=\"btn btn-success btn-sm\">Delete</button></td>"+
-                    "</tr>");
+                    "</tr>"
+                );
             }
         });
     });

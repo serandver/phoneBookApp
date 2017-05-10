@@ -33,8 +33,8 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public void editContact(Contact contact) {
-        contactRepository.save(contact);
+    public Contact editContact(Contact contact) {
+        return contactRepository.save(contact);
     }
 
     @Override

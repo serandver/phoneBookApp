@@ -37,10 +37,10 @@ public class ContactController {
     }
 
     @RequestMapping(method = RequestMethod.PUT,  value = "/users/{userId}/contacts/{contactId}")
-    public void updateContact (@RequestBody Contact contact, @PathVariable long userId, @PathVariable long contactId) {
+    public Contact updateContact (@RequestBody Contact contact, @PathVariable long userId, @PathVariable long contactId) {
         User user = userService.getUserByUserId(userId);
         contact.setUser(user);
-        contactService.editContact(contact);
+        return contactService.editContact(contact);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/users/{userId}/contacts/{contactId}")
