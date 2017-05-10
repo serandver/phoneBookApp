@@ -12,10 +12,10 @@
 
     function getAllContactsForSelectedUser(currentUserId){
         $.ajax({
-            url: '/users/'+currentUserId+'/contacts',
+            url: '/users/' + currentUserId + '/contacts',
             type: 'GET',
             success: function (rp) {
-                for (var i=0; i<rp.length; i++) {
+                for (var i = 0; i < rp.length; i++) {
                     $(".table-striped > tbody").append(
                         "<tr>"+
                         "<td>"+rp[i].contactId+"</td>"+
@@ -39,79 +39,48 @@
 
     $('body').on('click', 'button.edit-modal', function() {
 
-        var columnHeadings = $("thead th").map(function() {
-            return $(this).text();
-        }).get();
-
-        columnHeadings.pop();
-
         var columnValues = $(this).parent().siblings().map(function() {
             return $(this).text();
         }).get();
 
-        var modalBody = $('<div id="modalContent"></div>');
-        var modalForm = $('<form role="form" id="editContactForm"></form>');
+        $("#contactId").text(columnValues[0]);
+        $("#editFirstName").val(columnValues[1]);
+        $("#editLastName").val(columnValues[2]);
+        $("#editPatronymic").val(columnValues[3]);
+        $("#editMobilePhoneNumber").val(columnValues[4]);
+        $("#editHomePhoneNumber").val(columnValues[5]);
+        $("#editAddress").val(columnValues[6]);
+        $("#editInputEmail").val(columnValues[7]);
 
-        for (var i=0; i<columnHeadings.length-1; i++) {
-            var formGroup = $('<div class="form-group"></div>');
-            if (i != 0) {
-                formGroup.append('<label for="column'+i+'">'+columnHeadings[i]+'</label>');
-                formGroup.append('<input class="form-control" name=column'+i+' id=column'+i+' value="'+columnValues[i]+'" />');
-            }
-            else {
-                formGroup.append('<label for="column'+i+'">'+columnHeadings[i]+'</label>');
-                formGroup.append('<p class="form-control-static" id=column'+i+'>'+columnValues[i]+'</p>');
-            }
-            modalForm.append(formGroup);
-        }
-
-        modalBody.append(modalForm);
-        $('.modal-body').html(modalBody);
-
-        var contactForEditing = {
-            contactId: $("#column0").text(),
-            firstName: $("#column1").val(),
-            lastName:$("#column2").val(),
-            patronymic:$("#column3").val(),
-            mobilePhoneNumber: $("#column4").val(),
-            homePhoneNumber:$("#column5").val(),
-            address:$("#column6").val(),
-            email: $("#column7").val(),
-            user: currentUser
-        };
-
-        console.log("contact for editing: ");
-        console.log(contactForEditing);
     });
 
     $('#editModal').on('click', '#editContact', function() {
 
-        // $("#editContact").click(function () {
-        var editedContact = {
-            contactId: $("#column0").text(),
-            firstName: $("#column1").val(),
-            lastName:$("#column2").val(),
-            patronymic:$("#column3").val(),
-            mobilePhoneNumber: $("#column4").val(),
-            homePhoneNumber:$("#column5").val(),
-            address:$("#column6").val(),
-            email: $("#column7").val(),
+        var contactToSave = {
+            contactId: $("#contactId").text(),
+            firstName: $("#editFirstName").val(),
+            lastName:$("#editLastName").val(),
+            patronymic:$("#editPatronymic").val(),
+            mobilePhoneNumber: $("#editMobilePhoneNumber").val(),
+            homePhoneNumber:$("#editHomePhoneNumber").val(),
+            address:$("#editAddress").val(),
+            email: $("#editInputEmail").val(),
             user: currentUser
         };
 
         console.log("edited contact before sending to database: ");
-        console.log(editedContact);
+        console.log(contactToSave);
 
         $.ajax({
-            url: '/users/'+currentUserId+'/contacts/'+editedContact.contactId,
+            url: '/users/'+currentUserId+'/contacts/'+contactToSave.contactId,
             type: 'PUT',
             dataType: 'json',
-            data: JSON.stringify(editedContact),
+            data: JSON.stringify(contactToSave),
             contentType: 'application/json',
             success: function (rp) {
                 console.log("edited contact returned from database: ");
                 console.log(rp);
-                $(".table-striped > tbody:first-child").has(rp.contactId).html("<tr>"+
+                $(this).parent().siblings().html("<tr>"+
                     "<td>"+rp.contactId+"</td>"+
                     "<td>"+rp.firstName+"</td>"+
                     "<td>"+rp.lastName+"</td>"+

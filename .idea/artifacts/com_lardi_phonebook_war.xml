@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="com.lardi.phonebook:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="phonebook.war">
-      <element id="artifact" artifact-name="com.lardi.phonebook:war exploded" />
-    </root>
-  </artifact>
-</component>
