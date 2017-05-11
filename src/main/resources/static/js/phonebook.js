@@ -68,9 +68,6 @@
             user: currentUser
         };
 
-        console.log("edited contact before sending to database: ");
-        console.log(contactToSave);
-
         $.ajax({
             url: '/users/'+currentUserId+'/contacts/'+contactToSave.contactId,
             type: 'PUT',
@@ -78,9 +75,9 @@
             data: JSON.stringify(contactToSave),
             contentType: 'application/json',
             success: function (rp) {
-                console.log("edited contact returned from database: ");
-                console.log(rp);
-                $(this).parent().siblings().html("<tr>"+
+                $("td").filter(function() {
+                    return $(this).text() == rp.contactId;
+                }).closest("tr").replaceWith("<tr>"+
                     "<td>"+rp.contactId+"</td>"+
                     "<td>"+rp.firstName+"</td>"+
                     "<td>"+rp.lastName+"</td>"+
