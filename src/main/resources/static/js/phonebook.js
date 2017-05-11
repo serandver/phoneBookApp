@@ -27,7 +27,7 @@
                         "<td>"+rp[i].address+"</td>"+
                         "<td>"+rp[i].email+"</td>"+
                         "<td><button class=\"btn btn-success btn-sm edit-modal\" data-toggle=\"modal\" data-target=\"#editModal\" contenteditable=\"false\">Edit</button></td>"+
-                        "<td><button class=\"btn btn-success btn-sm\">Delete</button></td>"+
+                        "<td><button class=\"btn btn-success btn-sm delete\">Delete</button></td>"+
                         "/tr>");
                 }
             }
@@ -87,7 +87,7 @@
                     "<td>"+rp.address+"</td>"+
                     "<td>"+rp.email+"</td>"+
                     "<td><button class=\"btn btn-success btn-sm edit-modal\" data-toggle=\"modal\" data-target=\"#editModal\" contenteditable=\"false\">Edit</button></td>"+
-                    "<td><button class=\"btn btn-success btn-sm\">Delete</button></td>"+
+                    "<td><button class=\"btn btn-success btn-sm delete\">Delete</button></td>"+
                     "</tr>");
             }
         });
@@ -123,10 +123,29 @@
                     "<td>"+rp.address+"</td>"+
                     "<td>"+rp.email+"</td>"+
                     "<td><button class=\"btn btn-success btn-sm edit-modal\" data-toggle=\"modal\" data-target=\"#editModal\" contenteditable=\"false\">Edit</button></td>"+
-                    "<td><button class=\"btn btn-success btn-sm\">Delete</button></td>"+
+                    "<td><button class=\"btn btn-success btn-sm delete\">Delete</button></td>"+
                     "</tr>"
                 );
             }
         });
     });
+
+    $('body').on('click', 'button.delete', function() {
+
+        if (confirm("Do you really want to delete this contact?")) {
+            var contactId = $(this).parent().siblings().map(function () {
+                return $(this).text();
+            }).get()[0];
+
+            var tr = $(this).closest('tr');
+
+            $.ajax({
+                url: '/users/' + currentUserId + '/contacts/' + contactId,
+                type: 'DELETE',
+                success: function () {
+                    tr.remove();
+                }
+            });
+        }
+    })
 })();
