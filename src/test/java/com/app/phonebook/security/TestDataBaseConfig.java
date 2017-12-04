@@ -1,4 +1,4 @@
-package com.app.phonebook.config;
+package com.app.phonebook.security;
 
 import org.hibernate.ejb.HibernatePersistence;
 import org.springframework.context.annotation.Bean;

@@ -34,19 +34,19 @@
 
     <div class="container">
 
-      <form class="form-signin">
+      <form class="form-signin" method="post" modelAttribute="userForm" >
         <h2 class="form-signin-heading">Please sign up</h2>
         <div class="form-group">
-          <label for="userName" class="sr-only">Login</label>
-          <input type="text" class="form-control" userId="userName" placeholder="Login" required="required" autofocus="autofocus"/>
+          <label for="username" class="sr-only">Enter your login</label>
+          <input type="text" class="form-control" id="username" placeholder="Login" required="required" autofocus="autofocus"/>
         </div>
         <div class="form-group">
-          <label for="name" class="sr-only">Full name</label>
-          <input type="text" class="form-control" userId="name" placeholder="Full name" required="required"/>
+          <label for="inputPassword" class="sr-only">Enter your password</label>
+          <input type="password" class="form-control" id="inputPassword" placeholder="Password" required="required"/>
         </div>
         <div class="form-group">
-          <label for="inputPassword" class="sr-only">Your password</label>
-          <input type="password" userId="inputPassword" class="form-control" placeholder="Your password" required="required"/>
+          <label for="passwordConfirm" class="sr-only">Confirm your password</label>
+          <input type="password" id="passwordConfirm" class="form-control" placeholder="Confirm password" required="required"/>
         </div>
         <!--<div class="form-group">-->
           <!--<label for="confirmPassword" class="sr-only">Confirm password</label>-->

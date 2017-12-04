@@ -8,6 +8,9 @@ import com.app.phonebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Service
 public class Populator {
 
@@ -21,18 +24,27 @@ public class Populator {
     private ContactRepository contactRepository;
 
     private void populateUsers() {
+        Role userRole = new Role("USER");
+        Set<Role> userRoles = new HashSet();
+        userRoles.add(userRole);
+
         User user = new User();
-        user.setUserName("user");
+        user.setUserId(10L);
+        user.setUsername("user");
         user.setPassword("user");
-        user.setFio("userNameAndSurname");
-        user.setRole(Role.USER);
+        user.setRoles(userRoles);
         userRepository.save(user);
 
+        Role adminRole = new Role("ADMIN");
+        Set<Role> adminRoles = new HashSet();
+        adminRoles.add(adminRole);
+        adminRoles.add(userRole);
+
         User admin = new User();
-        admin.setRole(Role.ADMIN);
+        admin.setUserId(9L);
+        admin.setUsername("admin");
         admin.setPassword("admin");
-        admin.setUserName("admin");
-        admin.setFio("Super admin");
+        admin.setRoles(adminRoles);
         userRepository.save(admin);
     }
 

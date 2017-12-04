@@ -4,11 +4,13 @@ import com.app.phonebook.service.impl.Populator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 import javax.annotation.PostConstruct;
 
 @SpringBootApplication
-public class MainApp {
+public class MainApp extends SpringBootServletInitializer {
 
 	@Autowired
 	private Populator populator;
@@ -18,7 +20,12 @@ public class MainApp {
 		populator.init();
 	}
 
-    public static void main(String[] args) {
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(MainApp.class);
+	}
+
+	public static void main(String[] args) {
         SpringApplication.run(MainApp.class, args);
     }
 }
