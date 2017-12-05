@@ -25,7 +25,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/users")
     public void addUser (@RequestBody User user) {
-        userService.addUser(user);
+        userService.createNewUser(user);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/users/{userId}")

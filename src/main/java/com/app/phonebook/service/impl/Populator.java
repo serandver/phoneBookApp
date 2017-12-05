@@ -4,11 +4,14 @@ import com.app.phonebook.model.Role;
 import com.app.phonebook.repository.ContactRepository;
 import com.app.phonebook.model.Contact;
 import com.app.phonebook.model.User;
+import com.app.phonebook.repository.RoleRepository;
 import com.app.phonebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -23,33 +26,45 @@ public class Populator {
     @Autowired
     private ContactRepository contactRepository;
 
-    private void populateUsers() {
+    @Autowired
+    private RoleRepository roleRepository;
+
+    public void init() {
+        populateRoles();
+//        populateUsers();
+//        populateContacts();
+    }
+
+    private void populateRoles() {
         Role userRole = new Role("USER");
-        Set<Role> userRoles = new HashSet();
-        userRoles.add(userRole);
+        roleRepository.save(userRole);
+//        Role adminRole = new Role("ADMIN");
+//        roleRepository.save(adminRole);
+    }
+
+    private void populateUsers() {
 
         User user = new User();
-        user.setUserId(10L);
-        user.setUsername("user");
+        user.setUsername("testUser");
         user.setPassword("user");
+        Set<Role> userRoles = new HashSet();
+        userRoles.add(roleRepository.findByName("USER"));
         user.setRoles(userRoles);
         userRepository.save(user);
 
-        Role adminRole = new Role("ADMIN");
-        Set<Role> adminRoles = new HashSet();
-        adminRoles.add(adminRole);
-        adminRoles.add(userRole);
-
         User admin = new User();
-        admin.setUserId(9L);
-        admin.setUsername("admin");
+        admin.setUsername("testAdmin");
         admin.setPassword("admin");
-        admin.setRoles(adminRoles);
+        List<Role> allRoles = roleRepository.findAll();
+        if (!allRoles.isEmpty()) {
+            Set<Role> adminRoles = new HashSet(allRoles);
+            admin.setRoles(adminRoles);
+        }
         userRepository.save(admin);
     }
 
     private void populateContacts() {
-        User user = userRepository.findOne((long)1);;
+        User user = userRepository.findByUsername("testUser");
         Contact contact;
         for (int i = 0; i< NUMBER_OF_CONTACTS; i++) {
             contact = new Contact();
@@ -63,11 +78,6 @@ public class Populator {
             contact.setUser(user);
             contactRepository.save(contact);
         }
-    }
-
-    public void init() {
-        populateUsers();
-        populateContacts();
     }
 
     public static int getNumberOfContacts() {

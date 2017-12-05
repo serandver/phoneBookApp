@@ -1,5 +1,6 @@
 package com.app.phonebook.service.impl;
 
+import com.app.phonebook.model.Role;
 import com.app.phonebook.repository.RoleRepository;
 import com.app.phonebook.service.UserService;
 import com.app.phonebook.model.User;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,10 +32,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addUser(User user) {
+    public User createNewUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles(new HashSet<>(roleRepository.findAll()));
+        setDefaultUserRole(user);
         return userRepository.save(user);
+    }
+
+    private void setDefaultUserRole(User user) {
+        Set<Role> defaultRolesForNewUser = new HashSet<>();
+        Role userRole = roleRepository.findByName("USER");
+        defaultRolesForNewUser.add(userRole);
+        user.setRoles(defaultRolesForNewUser);
     }
 
     @Override

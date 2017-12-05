@@ -8,10 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 @Controller
 public class ViewController {
@@ -49,25 +50,21 @@ public class ViewController {
 
 
     @RequestMapping(value = "/signup", method = { RequestMethod.GET })
-    public String registration(Model model) {
-        model.addAttribute("userForm", new User());
-
-        return "signup";
+    public ModelAndView registration (ModelAndView modelAndView) {
+        modelAndView.addObject("user", new User());
+        modelAndView.setViewName("signup");
+        return modelAndView;
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
+    public String registration(@Valid User user, BindingResult bindingResult, Model model) {
 
-        userValidator.validate(userForm, bindingResult);
-
+        userValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
-            return "registration";
+            return "signup";
         }
-
-        userService.addUser(userForm);
-
-        securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
-
+        userService.createNewUser(user);
+        securityService.autologin(user.getUsername(), user.getPasswordConfirm());
         return "redirect:/phonebook";
     }
 
