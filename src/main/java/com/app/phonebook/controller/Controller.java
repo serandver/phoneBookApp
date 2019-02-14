@@ -1,30 +1,34 @@
 package com.app.phonebook.controller;
 
+import com.app.phonebook.dto.UserDto;
+import com.app.phonebook.exceptions.EmailExistsException;
 import com.app.phonebook.model.User;
 import com.app.phonebook.service.SecurityService;
 import com.app.phonebook.service.UserService;
-import com.app.phonebook.validator.UserValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
-@Controller
-public class ViewController {
+@org.springframework.stereotype.Controller
+public class Controller {
+
+    final static Logger LOGGER = LogManager.getLogger(Controller.class);
 
     @Autowired
     private UserService userService;
 
     @Autowired
     private SecurityService securityService;
-
-    @Autowired
-    private UserValidator userValidator;
 
     @RequestMapping(value = {"/" ,"/index"})
     public String getStartPage(){
@@ -47,26 +51,43 @@ public class ViewController {
         return "login";
     }
 
-
-
     @RequestMapping(value = "/signup", method = { RequestMethod.GET })
-    public ModelAndView registration (ModelAndView modelAndView) {
-        modelAndView.addObject("user", new User());
+    public ModelAndView showRegistrationForm (ModelAndView modelAndView) {
+        modelAndView.addObject("user", new UserDto());
         modelAndView.setViewName("signup");
         return modelAndView;
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String registration(@Valid User user, BindingResult bindingResult, Model model) {
+    public ModelAndView registerUserAccount(
+            @ModelAttribute("user") @Valid UserDto userDto,
+            BindingResult result,
+            WebRequest request,
+            Errors errors) {
 
-        userValidator.validate(user, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return "signup";
+        User registered = new User();
+        if (!result.hasErrors()) {
+            registered = createUserAccount(userDto, result);
         }
-        userService.createNewUser(user);
-        securityService.autologin(user.getUsername(), user.getPasswordConfirm());
-        return "redirect:/phonebook";
+        if (registered == null) {
+            result.rejectValue("email", "message.regError");
+        }
+        if (result.hasErrors()) {
+            return new ModelAndView("signup", "user", registered);
+        }
+        else return new ModelAndView("successRegister", "user", registered);
     }
+
+    private User createUserAccount(UserDto userDto, BindingResult result) {
+        User registered = null;
+        try {
+            registered = userService.registerNewUserAccount(userDto);
+        } catch (EmailExistsException e) {
+            return null;
+        }
+        return registered;
+    }
+
 
     @RequestMapping(value = {"/phonebook"})
     public String getContacts(){

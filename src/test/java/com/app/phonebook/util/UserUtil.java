@@ -1,21 +1,21 @@
 package com.app.phonebook.util;
 
-import com.app.phonebook.model.Role;
-import com.app.phonebook.model.User;
+import com.app.phonebook.dto.UserDto;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserUtil {
-    public static User createUser() {
-        Role userRole = new Role("USER");
-        Set<Role> userRoles = new HashSet();
-        userRoles.add(userRole);
 
-        User user = new User();
-        user.setUsername("ivanLogin");
-        user.setPassword("1234");
-        user.setRoles(userRoles);
-        return user;
+
+    public static UserDto createUser() {
+        List<String> userRoles = new ArrayList<>();
+        userRoles.add("USER");
+
+        UserDto userDto = new UserDto();
+        userDto.setFirstName("Ivan");
+        userDto.setLastName("Ivanov");
+        userDto.setPassword("1234");
+        return userDto;
     }
 }

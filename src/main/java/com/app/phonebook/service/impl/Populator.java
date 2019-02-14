@@ -1,18 +1,11 @@
 package com.app.phonebook.service.impl;
 
-import com.app.phonebook.model.Role;
 import com.app.phonebook.repository.ContactRepository;
 import com.app.phonebook.model.Contact;
 import com.app.phonebook.model.User;
-import com.app.phonebook.repository.RoleRepository;
 import com.app.phonebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Service
 public class Populator {
@@ -26,45 +19,30 @@ public class Populator {
     @Autowired
     private ContactRepository contactRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
-
     public void init() {
-        populateRoles();
 //        populateUsers();
 //        populateContacts();
-    }
-
-    private void populateRoles() {
-        Role userRole = new Role("USER");
-        roleRepository.save(userRole);
-//        Role adminRole = new Role("ADMIN");
-//        roleRepository.save(adminRole);
     }
 
     private void populateUsers() {
 
         User user = new User();
-        user.setUsername("testUser");
+        user.setFirstName("User");
+        user.setLastName("User");
         user.setPassword("user");
-        Set<Role> userRoles = new HashSet();
-        userRoles.add(roleRepository.findByName("USER"));
-        user.setRoles(userRoles);
+        user.setEmail("user@user.com");
         userRepository.save(user);
 
         User admin = new User();
-        admin.setUsername("testAdmin");
-        admin.setPassword("admin");
-        List<Role> allRoles = roleRepository.findAll();
-        if (!allRoles.isEmpty()) {
-            Set<Role> adminRoles = new HashSet(allRoles);
-            admin.setRoles(adminRoles);
-        }
+        user.setFirstName("Admin");
+        user.setLastName("admin");
+        user.setPassword("admin");
+        user.setEmail("admin@admin.com");
         userRepository.save(admin);
     }
 
     private void populateContacts() {
-        User user = userRepository.findByUsername("testUser");
+        User user = userRepository.findByEmail("testUser");
         Contact contact;
         for (int i = 0; i< NUMBER_OF_CONTACTS; i++) {
             contact = new Contact();

@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:form="http://www.w3.org/1999/xhtml">
 
-  <head>
+<head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -25,38 +25,54 @@
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
+</head>
 
-  <body>
+<body>
 
-    <div class="container">
+<div class="container">
+    <h1 th:text="#{label.form.title}">form</h1>
 
-      <form th:action="@{/signup}" th:object="${user}" class="form-signin" method="post">
-        <h2 class="form-signin-heading">Please sign up</h2>
-        <div class="form-group">
-          <label for="username" class="sr-only">Enter your login</label>
-          <input type="text" th:field="*{username}" name="username" class="form-control" id="username" placeholder="Login" required="required" autofocus="autofocus"/>
-            <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error message</td>
+    <form action="/signup" th:object="${user}" method="POST" enctype="utf8">
+        <div>
+            <label th:text="#{label.user.firstName}">first</label>
+            <input th:field="*{firstName}"/>
+            <p th:each="error: ${#fields.errors('firstName')}"
+               th:text="${error}">Validation error</p>
         </div>
-        <div class="form-group">
-          <label for="password" class="sr-only">Enter your password</label>
-          <input type="password" th:field="*{password}" name="password" class="form-control" id="password" placeholder="Password" required="required"/>
-            <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error message</td>
+        <div>
+            <label th:text="#{label.user.lastName}">last</label>
+            <input th:field="*{lastName}"/>
+            <p th:each="error : ${#fields.errors('lastName')}"
+               th:text="${error}">Validation error</p>
         </div>
-        <div class="form-group">
-          <label for="passwordConfirm" class="sr-only">Confirm your password</label>
-          <input type="password" th:field="*{passwordConfirm}" name="passwordConfirm" id="passwordConfirm" class="form-control" placeholder="Confirm password" required="required"/>
+        <div>
+            <label th:text="#{label.user.email}">email</label>
+            <input type="email" th:field="*{email}"/>
+            <p th:each="error : ${#fields.errors('email')}"
+               th:text="${error}">Validation error</p>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
-      </form>
+        <div>
+            <label th:text="#{label.user.password}">password</label>
+            <input type="password" th:field="*{password}"/>
+            <p th:each="error : ${#fields.errors('password')}"
+               th:text="${error}">Validation error</p>
+        </div>
+        <div>
+            <label th:text="#{label.user.confirmPass}">confirm</label>
+            <input type="password" th:field="*{matchingPassword}"/>
+        </div>
+        <button type="submit" th:text="#{label.form.submit}">submit</button>
+    </form>
 
-    </div> <!-- /container -->
+    <a th:href="@{/login.html}" th:text="#{label.form.loginLink}">login</a>
+
+</div> <!-- /container -->
 
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../static/js/ie10-viewport-bug-workaround.js"></script>
-  </body>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="../static/js/ie10-viewport-bug-workaround.js"></script>
+</body>
 </html>

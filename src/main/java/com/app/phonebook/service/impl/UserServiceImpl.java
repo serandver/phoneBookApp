@@ -1,28 +1,31 @@
 package com.app.phonebook.service.impl;
 
-import com.app.phonebook.model.Role;
-import com.app.phonebook.repository.RoleRepository;
+import com.app.phonebook.dto.UserDto;
+import com.app.phonebook.exceptions.EmailExistsException;
 import com.app.phonebook.service.UserService;
 import com.app.phonebook.model.User;
 import com.app.phonebook.repository.UserRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javax.transaction.Transactional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
 
+    final static Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public List<User> getAllUsers() {
@@ -31,18 +34,35 @@ public class UserServiceImpl implements UserService {
         return userList;
     }
 
+    @Transactional
     @Override
-    public User createNewUser(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        setDefaultUserRole(user);
+    public User registerNewUserAccount(UserDto userDto) throws EmailExistsException {
+        if (emailExist(userDto.getEmail())) {
+            throw new EmailExistsException("There is an account with that email address: " +  userDto.getEmail());
+        }
+        User user = convertToEntity(userDto);
+        List<String> defaultUserRoles = Arrays.asList("USER");
+        user.setRoles(defaultUserRoles);
         return userRepository.save(user);
     }
 
-    private void setDefaultUserRole(User user) {
-        Set<Role> defaultRolesForNewUser = new HashSet<>();
-        Role userRole = roleRepository.findByName("USER");
-        defaultRolesForNewUser.add(userRole);
-        user.setRoles(defaultRolesForNewUser);
+    private boolean emailExist(String email) {
+        User user = userRepository.findByEmail(email);
+        return user != null;
+    }
+
+    private User convertToEntity(UserDto userDto) {
+        User user = null;
+        try {
+            user = modelMapper.map(userDto, User.class);
+        } catch (Exception e) {
+            LOGGER.error("UserDto can not be parsed, " + userDto);
+        }
+        return user;
+    }
+
+    private UserDto convertToDto(User user) {
+        return modelMapper.map(user, UserDto.class);
     }
 
     @Override
@@ -58,10 +78,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(long userId) {
         userRepository.delete(userId);
-    }
-
-    @Override
-    public User findByUsername(String userName) {
-        return userRepository.findByUsername(userName);
     }
 }
