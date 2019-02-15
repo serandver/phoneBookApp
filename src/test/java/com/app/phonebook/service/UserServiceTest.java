@@ -1,7 +1,7 @@
 package com.app.phonebook.service;
 
 import com.app.phonebook.util.UserUtil;
-import com.app.phonebook.security.TestDataBaseConfig;
+import com.app.phonebook.config.TestDataBaseConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

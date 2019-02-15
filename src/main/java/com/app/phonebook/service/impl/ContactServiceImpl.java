@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ContactServiceImpl implements ContactService{
@@ -28,8 +29,8 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public Contact getContactById(long contactId) {
-        return contactRepository.findOne(contactId);
+    public Optional<Contact> getContactById(long contactId) {
+        return contactRepository.findById(contactId);
     }
 
     @Override
@@ -38,8 +39,8 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public void deleteContact(long contactId) {
-        contactRepository.delete(contactId);
+    public void deleteContact(Contact contact) {
+        contactRepository.delete(contact);
     }
 
 }

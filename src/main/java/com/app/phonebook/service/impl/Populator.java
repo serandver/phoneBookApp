@@ -7,6 +7,8 @@ import com.app.phonebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 @Service
 public class Populator {
 
@@ -20,24 +22,26 @@ public class Populator {
     private ContactRepository contactRepository;
 
     public void init() {
-//        populateUsers();
+        populateUsers();
 //        populateContacts();
     }
 
     private void populateUsers() {
 
-        User user = new User();
-        user.setFirstName("User");
-        user.setLastName("User");
-        user.setPassword("user");
-        user.setEmail("user@user.com");
+        User user = User.builder()
+                .firstName("user")
+                .lastName("user")
+                .email("user@user.com")
+                .password("111")
+                .build();
         userRepository.save(user);
 
-        User admin = new User();
-        user.setFirstName("Admin");
-        user.setLastName("admin");
-        user.setPassword("admin");
-        user.setEmail("admin@admin.com");
+        User admin = User.builder()
+                .firstName("admin")
+                .lastName("admin")
+                .email("admin@admin.com")
+                .password("222")
+                .build();
         userRepository.save(admin);
     }
 

@@ -1,4 +1,4 @@
-package com.app.phonebook.service.impl;
+package com.app.phonebook.security;
 
 import com.app.phonebook.model.User;
 import com.app.phonebook.repository.UserRepository;
@@ -15,24 +15,30 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
-    //
-    public UserDetails loadUserByUsername(String email)
-            throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException(
-                    "No user found with username: "+ email);
-        }
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
         boolean enabled = true;
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
-        return  new org.springframework.security.core.userdetails.User
-                (user.getEmail(),
-                        user.getPassword().toLowerCase(), enabled, accountNonExpired,
-                        credentialsNonExpired, accountNonLocked,
-                        getAuthorities(user.getRoles()));
+
+        try {
+            User user = userRepository.findByEmail(email);
+            if (user == null) {
+                throw new UsernameNotFoundException("No user found with username: "+ email);
+            }
+            return  new org.springframework.security.core.userdetails.User(
+                    user.getEmail(),
+                    user.getPassword().toLowerCase(),
+                    user.isEnabled(),
+                    accountNonExpired,
+                    credentialsNonExpired,
+                    accountNonLocked,
+                    getAuthorities(user.getRoles()));
+        } catch (UsernameNotFoundException e) {
+           throw new RuntimeException(e);
+        }
     }
 
     private static List<GrantedAuthority> getAuthorities (List<String> roles) {

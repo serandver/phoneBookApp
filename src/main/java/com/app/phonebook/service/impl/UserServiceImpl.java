@@ -2,6 +2,8 @@ package com.app.phonebook.service.impl;
 
 import com.app.phonebook.dto.UserDto;
 import com.app.phonebook.exceptions.EmailExistsException;
+import com.app.phonebook.model.VerificationToken;
+import com.app.phonebook.repository.VerificationTokenRepository;
 import com.app.phonebook.service.UserService;
 import com.app.phonebook.model.User;
 import com.app.phonebook.repository.UserRepository;
@@ -22,8 +24,13 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private VerificationTokenRepository tokenRepository;
+
+//    @Autowired
+//    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Autowired
     private ModelMapper modelMapper;
 
@@ -66,8 +73,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByUserId(long userId) {
-        return userRepository.findOne(userId);
+    public Optional<User> getUserByUserId(long userId) {
+        return userRepository.findById(userId);
     }
 
     @Override
@@ -76,7 +83,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(long userId) {
-        userRepository.delete(userId);
+    public void deleteUser(UserDto userDto) {
+        User user = convertToEntity(userDto);
+        userRepository.delete(user);
+    }
+
+    @Override
+    public User getUser(String verificationToken) {
+        User user = tokenRepository.findByToken(verificationToken).getUser();
+        return user;
+    }
+
+    @Override
+    public VerificationToken getVerificationToken(String VerificationToken) {
+        return tokenRepository.findByToken(VerificationToken);
+    }
+
+    @Override
+    public void saveRegisteredUser(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
+    public void createVerificationToken(User user, String token) {
+        VerificationToken myToken = new VerificationToken(token, user);
+        tokenRepository.save(myToken);
     }
 }

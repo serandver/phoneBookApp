@@ -1,6 +1,6 @@
 package com.app.phonebook.service;
 
-import com.app.phonebook.security.TestDataBaseConfig;
+import com.app.phonebook.config.TestDataBaseConfig;
 import com.app.phonebook.util.ContactUtil;
 import org.junit.Before;
 import org.junit.Test;

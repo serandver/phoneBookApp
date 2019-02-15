@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UserCrudController {
@@ -22,7 +23,12 @@ public class UserCrudController {
 
     @RequestMapping("/users/{userId}")
     public User getUser (@PathVariable long userId) {
-        return userService.getUserByUserId(userId);
+        Optional<User> optionalUser = userService.getUserByUserId(userId);
+        User user = new User();
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
+        }
+        return user;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/users")
@@ -36,8 +42,8 @@ public class UserCrudController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/users/{userId}")
-    public void deleteUser (@PathVariable long userId) {
-        userService.deleteUser(userId);
+    public void deleteUser (@RequestBody UserDto userDto) {
+        userService.deleteUser(userDto);
     }
 
 }
