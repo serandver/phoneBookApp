@@ -1,6 +1,21 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/2005/Atom">
+<head>
+    <title th:text="#{label.badUser.title}">bad user</title>
+</head>
 <body>
-<h1 th:text="${param.message[0]}>Error Message</h1>
-    <a th:href="@{/signup.html}" th:text="#{label.form.loginSignUp}">signup</a>
+<h1 th:text="${param.message[0]}">error</h1>
+<br>
+<a th:href="@{/user/registration}" th:text="#{label.form.loginSignUp}">
+    signup</a>
+
+<div th:if="${param.expired[0]}">
+    <h1 th:text="#{label.form.resendRegistrationToken}">resend</h1>
+    <button onclick="resendToken()"
+            th:text="#{label.form.resendRegistrationToken}">resend</button>
+
+    <script src="jquery.min.js"></script>
+    <script src="/js/badUser.js"></script>
+
+</div>
 </body>
 </html>

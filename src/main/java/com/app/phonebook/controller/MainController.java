@@ -4,6 +4,7 @@ import com.app.phonebook.dto.UserDto;
 import com.app.phonebook.exceptions.EmailExistsException;
 import com.app.phonebook.model.User;
 import com.app.phonebook.model.VerificationToken;
+import com.app.phonebook.registration.GenericResponse;
 import com.app.phonebook.service.SecurityService;
 import com.app.phonebook.service.UserService;
 import com.app.phonebook.registration.OnRegistrationCompleteEvent;
@@ -12,17 +13,18 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Calendar;
 import java.util.Locale;
@@ -40,6 +42,12 @@ public class MainController {
 
     @Autowired
     private MessageSource messages;
+
+    @Autowired
+    private Environment env;
+
+    @Autowired
+    private JavaMailSender mailSender;
 
     @RequestMapping(value = {"/" ,"/index"})
     public String getStartPage(){
@@ -118,14 +126,48 @@ public class MainController {
         User user = verificationToken.getUser();
         Calendar cal = Calendar.getInstance();
         if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
-            String messageValue = messages.getMessage("auth.message.expired", null, locale);
-            model.addAttribute("message", messageValue);
+            model.addAttribute("message", messages.getMessage("auth.message.expired", null, locale));
+            model.addAttribute("expired", true);
+            model.addAttribute("token", token);
             return "redirect:/badUser.html?lang=" + locale.getLanguage();
         }
 
         user.setEnabled(true);
         userService.saveRegisteredUser(user);
-        return "redirect:/login.html?lang=" + request.getLocale().getLanguage();
+        model.addAttribute("message", messages.getMessage("message.accountVerified", null, locale));
+        return "redirect:/login.html?lang=" + locale.getLanguage();
+    }
+
+    @RequestMapping(value = "/user/resendRegistrationToken", method = RequestMethod.GET)
+    @ResponseBody
+    public GenericResponse resendRegistrationToken(
+            HttpServletRequest request, @RequestParam("token") String existingToken) {
+        VerificationToken newToken = userService.generateNewVerificationToken(existingToken);
+
+        User user = userService.getUser(newToken.getToken());
+        String appUrl =
+                "http://" + request.getServerName() +
+                        ":" + request.getServerPort() +
+                        request.getContextPath();
+        SimpleMailMessage email =
+                constructResendVerificationTokenEmail(appUrl, request.getLocale(), newToken, user);
+        mailSender.send(email);
+
+        return new GenericResponse(
+                messages.getMessage("message.resendToken", null, request.getLocale()));
+    }
+
+    private SimpleMailMessage constructResendVerificationTokenEmail
+            (String contextPath, Locale locale, VerificationToken newToken, User user) {
+        String confirmationUrl =
+                contextPath + "/regitrationConfirm.html?token=" + newToken.getToken();
+        String message = messages.getMessage("message.resendToken", null, locale);
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setSubject("Resend Registration Token");
+        email.setText(message + " rn" + confirmationUrl);
+        email.setFrom(env.getProperty("support.email"));
+        email.setTo(user.getEmail());
+        return email;
     }
 
     @RequestMapping(value = {"/phonebook"})
