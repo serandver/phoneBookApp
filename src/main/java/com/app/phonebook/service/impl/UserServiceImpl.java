@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -28,8 +29,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private VerificationTokenRepository tokenRepository;
 
-//    @Autowired
-//    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -62,6 +63,7 @@ public class UserServiceImpl implements UserService {
         User user = null;
         try {
             user = modelMapper.map(userDto, User.class);
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         } catch (Exception e) {
             LOGGER.error("UserDto can not be parsed, " + userDto);
         }
