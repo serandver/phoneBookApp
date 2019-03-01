@@ -1,6 +1,8 @@
 package com.app.phonebook.config;
 
 import com.app.phonebook.security.UserDetailsServiceImpl;
+import com.app.phonebook.service.SecurityService;
+import com.app.phonebook.service.impl.SecurityServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -52,6 +54,11 @@ public class Config extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public SecurityService createUserSecurityService() {
+        return new SecurityServiceImpl();
+    }
+
+    @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
@@ -94,6 +101,10 @@ public class Config extends WebSecurityConfigurerAdapter {
                     .antMatchers("/", "/index", "/login", "/signup").permitAll()
                     .anyRequest().authenticated()
                     .and()
+                .authorizeRequests()
+                    .antMatchers("/user/updatePassword*", "/user/savePassword*", "/updatePassword*")
+                    .hasAuthority("CHANGE_PASSWORD_PRIVILEGE")
+                    .and()
                 .formLogin()
                     .loginPage("/login")
                     .successForwardUrl("/phonebook")
@@ -105,7 +116,6 @@ public class Config extends WebSecurityConfigurerAdapter {
 
         http.exceptionHandling().accessDeniedPage("/403");
     }
-
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {

@@ -15,6 +15,9 @@ public interface UserService {
     void createVerificationToken(User user, String token);
     VerificationToken getVerificationToken(String VerificationToken);
     VerificationToken generateNewVerificationToken(String existingVerificationToken);
+    User findUserByEmail(String email);
+    void createPasswordResetTokenForUser(User user, String token);
+    void changeUserPassword(User user, String password);
     List<User> getAllUsers();
     Optional<User> getUserByUserId(long userId);
     void editUser (long userId, User user);

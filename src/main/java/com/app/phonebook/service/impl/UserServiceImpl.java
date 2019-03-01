@@ -2,7 +2,9 @@ package com.app.phonebook.service.impl;
 
 import com.app.phonebook.dto.UserDto;
 import com.app.phonebook.exceptions.EmailExistsException;
+import com.app.phonebook.model.PasswordResetToken;
 import com.app.phonebook.model.VerificationToken;
+import com.app.phonebook.repository.PasswordResetTokenRepository;
 import com.app.phonebook.repository.VerificationTokenRepository;
 import com.app.phonebook.service.UserService;
 import com.app.phonebook.model.User;
@@ -11,6 +13,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,6 +39,15 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private PasswordResetTokenRepository passwordTokenRepository;
+
+    @Autowired
+    private MessageSource messages;
+
+    @Autowired
+    private Environment env;
 
     @Override
     public List<User> getAllUsers() {
@@ -119,5 +133,36 @@ public class UserServiceImpl implements UserService {
     public void createVerificationToken(User user, String token) {
         VerificationToken myToken = new VerificationToken(token, user);
         tokenRepository.save(myToken);
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void createPasswordResetTokenForUser(User user, String token) {
+        final PasswordResetToken myToken = new PasswordResetToken(token, user);
+        passwordTokenRepository.save(myToken);
+    }
+
+    private SimpleMailMessage constructResetTokenEmail(String contextPath, Locale locale, String token, User user) {
+        String url = contextPath + "/user/changePassword?id=" + user.getUserId() + "&token=" + token;
+        String message = messages.getMessage("message.resetPassword", null, locale);
+        return constructEmail("Reset Password", message + " \r\n" + url, user);
+    }
+
+    private SimpleMailMessage constructEmail(String subject, String body, User user) {
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setSubject(subject);
+        email.setText(body);
+        email.setTo(user.getEmail());
+        email.setFrom(env.getProperty("support.email"));
+        return email;
+    }
+
+    public void changeUserPassword(User user, String password) {
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
     }
 }
