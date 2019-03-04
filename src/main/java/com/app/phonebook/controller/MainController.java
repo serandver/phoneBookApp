@@ -3,6 +3,7 @@ package com.app.phonebook.controller;
 import com.app.phonebook.dto.PasswordDto;
 import com.app.phonebook.dto.UserDto;
 import com.app.phonebook.exceptions.EmailExistsException;
+import com.app.phonebook.exceptions.InvalidOldPasswordException;
 import com.app.phonebook.exceptions.UserAlreadyExistException;
 import com.app.phonebook.exceptions.UserNotFoundException;
 import com.app.phonebook.model.User;
@@ -19,6 +20,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -223,6 +225,22 @@ public class MainController {
 
         userService.changeUserPassword(user, passwordDto.getNewPassword());
         return new GenericResponse(messages.getMessage("message.resetPasswordSuc", null, locale));
+    }
+
+    @RequestMapping(value = "/user/updatePassword", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('READ_PRIVILEGE')")
+    @ResponseBody
+    public GenericResponse changeUserPassword(Locale locale,
+                                              @RequestParam("password") String password,
+                                              @RequestParam("oldpassword") String oldPassword) {
+        User user = userService.findUserByEmail(
+                SecurityContextHolder.getContext().getAuthentication().getName());
+
+        if (!userService.checkIfValidOldPassword(user, oldPassword)) {
+            throw new InvalidOldPasswordException();
+        }
+        userService.changeUserPassword(user, password);
+        return new GenericResponse(messages.getMessage("message.updatePasswordSuc", null, locale));
     }
 
     @RequestMapping(value = {"/phonebook"})

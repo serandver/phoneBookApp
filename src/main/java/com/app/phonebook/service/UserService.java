@@ -22,4 +22,5 @@ public interface UserService {
     Optional<User> getUserByUserId(long userId);
     void editUser (long userId, User user);
     void deleteUser(UserDto userDto);
+    boolean checkIfValidOldPassword(final User user, final String oldPassword);
 }
