@@ -30,8 +30,14 @@
       <div class="header clearfix">
         <nav>
           <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active"><a th:href="@{/login}" >Sign in</a></li>
-            <li role="presentation"><a th:href="@{/registration}" >Sign up</a></li>
+            <li role="presentation" class="active"><a th:href="@{/login}" th:text="#{index.signin}">Sign in</a></li>
+            <li role="presentation"><a th:href="@{/signup}" >Sign up</a></li>
+            <span th:text="#{lang.change}"></span>:
+            <select id="locales">
+              <option value=""></option>
+              <option value="en" th:text="#{lang.eng}"></option>
+              <option value="ru" th:text="#{lang.ru}"></option>
+            </select>
           </ul>
         </nav>
       </div>
@@ -55,5 +61,17 @@
     <![endif]-->
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../static/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+    </script>
+    <script type="text/javascript">
+$(document).ready(function() {
+    $("#locales").change(function () {
+        var selectedOption = $('#locales').val();
+        if (selectedOption != ''){
+            window.location.replace('index?lang=' + selectedOption);
+        }
+    });
+});
+</script>
   </body>
 </html>
