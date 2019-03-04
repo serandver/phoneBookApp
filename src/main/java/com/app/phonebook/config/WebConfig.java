@@ -1,6 +1,5 @@
 package com.app.phonebook.config;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,9 +14,8 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import java.util.Locale;
 
 @Configuration
-@EnableAutoConfiguration
-@ComponentScan
-public class AppConfig implements WebMvcConfigurer {
+@ComponentScan(basePackages = "com.app.phonebook.controller")
+public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public LocaleResolver localeResolver() {

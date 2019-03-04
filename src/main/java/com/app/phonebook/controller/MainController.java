@@ -57,32 +57,6 @@ public class MainController {
     @Autowired
     private SecurityService securityService;
 
-    @RequestMapping(value = {"/" ,"/index"})
-    public String getStartPage(){
-        return "index";
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(Model model, String error, String logout) {
-        if (error != null)
-            model.addAttribute("error", "Your username and password is invalid.");
-
-        if (logout != null)
-            model.addAttribute("message", "You have been logged out successfully.");
-
-        return "login";
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST   )
-    public String getSignInPage(){
-        return "login";
-    }
-
-    @RequestMapping(value = "/signup", method = RequestMethod.GET   )
-    public String getSignUpPage(){
-        return "signup";
-    }
-
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     @ResponseBody
     public GenericResponse  registerUserAccount(@Valid UserDto userDto, HttpServletRequest request) {
@@ -110,8 +84,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/regitrationConfirm", method = RequestMethod.GET)
-    public String confirmRegistration
-            (WebRequest request, Model model, @RequestParam("token") String token) {
+    public String confirmRegistration(WebRequest request, Model model, @RequestParam("token") String token) {
 
         Locale locale = request.getLocale();
 
@@ -137,11 +110,9 @@ public class MainController {
         return "redirect:/login.html?lang=" + locale.getLanguage();
     }
 
-    @RequestMapping(value = "/user/resetPassword",
-            method = RequestMethod.POST)
+    @RequestMapping(value = "/user/resetPassword", method = RequestMethod.POST)
     @ResponseBody
-    public GenericResponse resetPassword(HttpServletRequest request,
-                                         @RequestParam("email") String userEmail) {
+    public GenericResponse resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail) {
         User user = userService.findUserByEmail(userEmail);
         if (user == null) {
             throw new UserNotFoundException();
@@ -176,8 +147,7 @@ public class MainController {
 
     @RequestMapping(value = "/user/resendRegistrationToken", method = RequestMethod.GET)
     @ResponseBody
-    public GenericResponse resendRegistrationToken(
-            HttpServletRequest request, @RequestParam("token") String existingToken) {
+    public GenericResponse resendRegistrationToken(HttpServletRequest request, @RequestParam("token") String existingToken) {
         VerificationToken newToken = userService.generateNewVerificationToken(existingToken);
 
         User user = userService.getUser(newToken.getToken());
@@ -241,20 +211,5 @@ public class MainController {
         }
         userService.changeUserPassword(user, password);
         return new GenericResponse(messages.getMessage("message.updatePasswordSuc", null, locale));
-    }
-
-    @RequestMapping(value = {"/phonebook"})
-    public String getContacts(){
-        return "phonebook";
-    }
-
-    @RequestMapping(value="/admin")
-    public String admin(){
-        return "admin";
-    }
-
-    @RequestMapping(value="/403")
-    public String Error403(){
-        return "403";
     }
 }
