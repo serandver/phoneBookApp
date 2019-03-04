@@ -25,6 +25,7 @@ public class User {
 
     @Column(name = "enabled")
     private boolean enabled;
+
     @ElementCollection
     @CollectionTable(name="roles", joinColumns=@JoinColumn(name="userId"))
     @Column(name="role")

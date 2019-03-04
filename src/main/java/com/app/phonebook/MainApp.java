@@ -12,14 +12,6 @@ import javax.annotation.PostConstruct;
 @SpringBootApplication
 public class MainApp extends SpringBootServletInitializer {
 
-	@Autowired
-	private Populator populator;
-
-	@PostConstruct
-	private void init(){
-		populator.init();
-	}
-
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(MainApp.class);
