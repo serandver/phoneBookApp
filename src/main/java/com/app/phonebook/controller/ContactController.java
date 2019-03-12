@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ContactController {
@@ -26,20 +27,31 @@ public class ContactController {
 
     @RequestMapping("/users/{userId}/contacts/{contactId}")
     public Contact getContact (@PathVariable long contactId) {
-        return contactService.getContactById(contactId);
+        Optional<Contact> optionalContact = contactService.getContactById(contactId);
+        Contact contact = new Contact();
+        if (optionalContact.isPresent()) {
+            contact = optionalContact.get();
+        }
+        return contact;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/users/{userId}/contacts")
     public Contact addContact (@RequestBody Contact contact, @PathVariable long userId) {
-        User user = userService.getUserByUserId(userId);
-        contact.setUser(user);
+        Optional<User> optionalUser = userService.getUserByUserId(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            contact.setUser(user);
+        }
         return contactService.addContact(contact);
     }
 
     @RequestMapping(method = RequestMethod.PUT,  value = "/users/{userId}/contacts/{contactId}")
     public Contact updateContact (@RequestBody Contact contact, @PathVariable long userId, @PathVariable long contactId) {
-        User user = userService.getUserByUserId(userId);
-        contact.setUser(user);
+        Optional<User> optionalUser = userService.getUserByUserId(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            contact.setUser(user);
+        }
         return contactService.editContact(contact);
     }
 

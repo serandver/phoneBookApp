@@ -8,6 +8,7 @@ import com.app.phonebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -49,7 +50,7 @@ public class Populator {
     }
 
     private void populateContacts() {
-        User user = userRepository.findOne((long)1);;
+        User user = userRepository.findById((long)1).get();
         Contact contact;
         for (int i = 0; i< NUMBER_OF_CONTACTS; i++) {
             contact = new Contact();

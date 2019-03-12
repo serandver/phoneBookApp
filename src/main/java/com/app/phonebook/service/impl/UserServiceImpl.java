@@ -5,12 +5,12 @@ import com.app.phonebook.service.UserService;
 import com.app.phonebook.model.User;
 import com.app.phonebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -19,8 +19,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Override
     public List<User> getAllUsers() {
@@ -31,14 +30,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addUser(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setRoles(new HashSet<>(roleRepository.findAll()));
         return userRepository.save(user);
     }
 
     @Override
-    public User getUserByUserId(long userId) {
-        return userRepository.findOne(userId);
+    public Optional<User> getUserByUserId(long userId) {
+        return userRepository.findById(userId);
     }
 
     @Override
@@ -48,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(long userId) {
-        userRepository.delete(userId);
+        userRepository.deleteById(userId);
     }
 
     @Override
