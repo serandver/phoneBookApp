@@ -78,9 +78,9 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
     @Transactional
     private User createAdmin(User user) {
         User admin = new User();
-        user.setFirstName("admin");
-        user.setLastName("admin");
-        user.setEmail("admin@test.com");
+        admin.setFirstName("admin");
+        admin.setLastName("admin");
+        admin.setEmail("admin@test.com");
         admin.setPassword("admin");
         Set<Role> adminRoles = new HashSet();
         Role adminRole = roleRepository.findByName("ROLE_ADMIN");
