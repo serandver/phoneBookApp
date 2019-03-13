@@ -17,9 +17,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private RoleRepository roleRepository;
-
 
     @Override
     public List<User> getAllUsers() {
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUsername(String userName) {
-        return userRepository.findByUsername(userName);
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }

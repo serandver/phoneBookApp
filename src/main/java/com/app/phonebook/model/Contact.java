@@ -5,7 +5,8 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-public @Data class Contact {
+@Data
+public class Contact {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
