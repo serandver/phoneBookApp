@@ -1,4 +1,4 @@
-package com.app.phonebook.controller;
+package com.app.phonebook.web.controller;
 
 
 import com.app.phonebook.model.Contact;

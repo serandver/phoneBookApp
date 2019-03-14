@@ -9,6 +9,7 @@ import com.app.phonebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -30,6 +31,9 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -67,7 +71,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
         user.setFirstName("user");
         user.setLastName("user");
         user.setEmail("user@test.com");
-        user.setPassword("user");
+        user.setPassword(passwordEncoder.encode("user"));
         Set<Role> userRoles = new HashSet();
         Role userRole = roleRepository.findByName("ROLE_USER");
         userRoles.add(userRole);
@@ -81,7 +85,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
         admin.setFirstName("admin");
         admin.setLastName("admin");
         admin.setEmail("admin@test.com");
-        admin.setPassword("admin");
+        admin.setPassword(passwordEncoder.encode("admin"));
         Set<Role> adminRoles = new HashSet();
         Role adminRole = roleRepository.findByName("ROLE_ADMIN");
         adminRoles.add(adminRole);
