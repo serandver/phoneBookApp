@@ -1,6 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
   <head>
@@ -31,12 +30,12 @@
         <nav>
           <ul class="nav nav-pills pull-right">
             <li role="presentation" class="active"><a th:href="@{/login}" th:text="#{index.signin}">Sign in</a></li>
-            <li role="presentation"><a th:href="@{/signup}" >Sign up</a></li>
-            <span th:text="#{lang.change}"></span>:
+            <li role="presentation"><a th:href="@{/signup}" th:text="#{index.signup}">Sign up</a></li>
+            <li role="presentation"><span th:text="#{lang.change}"/></span>:</li>
             <select id="locales">
-              <option value=""></option>
-              <option value="en" th:text="#{lang.eng}"></option>
-              <option value="ru" th:text="#{lang.ru}"></option>
+                <option value=""></option>
+                <option value="en" th:text="#{lang.eng}"></option>
+                <option value="ru" th:text="#{lang.ru}"></option>
             </select>
           </ul>
         </nav>
@@ -54,24 +53,8 @@
 
     </div> <!-- /container -->
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../static/js/ie10-viewport-bug-workaround.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
-    </script>
-    <script type="text/javascript">
-$(document).ready(function() {
-    $("#locales").change(function () {
-        var selectedOption = $('#locales').val();
-        if (selectedOption != ''){
-            window.location.replace('index?lang=' + selectedOption);
-        }
-    });
-});
-</script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/index.js}"></script>
   </body>
 </html>
