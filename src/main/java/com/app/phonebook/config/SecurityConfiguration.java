@@ -37,25 +37,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers(
-                        "/registration**", "/index", "/",
-                        "/js/**",
-                        "/css/**",
-                        "/img/**",
-                        "/webjars/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
+                    .antMatchers(
+                            "/registration**", "/index", "/",
+                            "/js/**",
+                            "/css/**",
+                            "/img/**",
+                            "/webjars/**").permitAll()
+                    .anyRequest().authenticated()
+                    .and()
                 .formLogin()
-                .loginPage("/login")
-                .successHandler(myAuthenticationSuccessHandler())
-                .permitAll()
-                .and()
+                    .loginPage("/login")
+                    .successHandler(myAuthenticationSuccessHandler())
+                    .permitAll()
+                    .and()
                 .logout()
-                .invalidateHttpSession(true)
-                .clearAuthentication(true)
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login?logout")
-                .permitAll();
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                    .logoutSuccessUrl("/login?logout")
+                    .permitAll();
     }
 
     @Bean
