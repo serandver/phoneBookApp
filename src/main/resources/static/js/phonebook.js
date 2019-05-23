@@ -1,14 +1,8 @@
 (function (){
 
-    // hardcoded value of current user
-    var currentUser = {
-        userId: 1,
-        userName: "userLogin 1",
-        password: "userPassword 1",
-        fio: "userNameAndSurname 1"
-    };
 
-    var currentUserId = currentUser.userId;
+//    var currentUserId = 1;
+    var currentUserId = $('#currentUserId').val();
 
     function getAllContactsForSelectedUser(currentUserId){
         $.ajax({

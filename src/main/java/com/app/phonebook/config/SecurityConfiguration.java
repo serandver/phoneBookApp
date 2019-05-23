@@ -1,6 +1,6 @@
 package com.app.phonebook.config;
 
-import com.app.phonebook.security.MySimpleUrlAuthenticationSuccessHandler;
+import com.app.phonebook.security.CustomAuthenticationSuccessHandler;
 import com.app.phonebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
-        return new MySimpleUrlAuthenticationSuccessHandler();
+        return new CustomAuthenticationSuccessHandler();
     }
 
     @Override
