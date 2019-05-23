@@ -28,6 +28,7 @@
         <form class="form-inline my-2 my-md-0">
             <p class="navbar-brand navbar-left">Welcome, <span sec:authentication="principal.username"> User.</span></p>
             <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+            <input id="currentUserId" type="hidden" th:value="${session.userId}">
             <button type="submit"  class="btn btn-link btn-logout" formaction="/logout" >Logout</button>
         </form>
     </div>

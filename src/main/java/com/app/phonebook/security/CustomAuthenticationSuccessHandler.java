@@ -1,6 +1,5 @@
 package com.app.phonebook.security;
 
-import com.app.phonebook.model.User;
 import com.app.phonebook.repository.UserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

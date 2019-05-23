@@ -1,8 +1,16 @@
 (function (){
 
-
-//    var currentUserId = 1;
+    function getCurrentUserById(currentUserId){
+        $.ajax({
+                 url: '/users/' + currentUserId,
+                 type: 'GET',
+                 success: function (rp) {
+                     return rp;
+                 }
+             });
+    }
     var currentUserId = $('#currentUserId').val();
+    var currentUser = getCurrentUserById(currentUserId);
 
     function getAllContactsForSelectedUser(currentUserId){
         $.ajax({
