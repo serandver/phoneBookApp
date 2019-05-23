@@ -5,6 +5,7 @@ import com.app.phonebook.model.Contact;
 import com.app.phonebook.model.User;
 import com.app.phonebook.service.ContactService;
 import com.app.phonebook.service.UserService;
+import com.app.phonebook.web.dto.ContactDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,13 +37,8 @@ public class ContactController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/users/{userId}/contacts")
-    public Contact addContact (@RequestBody Contact contact, @PathVariable long userId) {
-        Optional<User> optionalUser = userService.getUserByUserId(userId);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            contact.setUser(user);
-        }
-        return contactService.addContact(contact);
+    public Contact addContact (@RequestBody ContactDto contactDto, @PathVariable long userId) {
+        return contactService.addContact(contactDto, userId);
     }
 
     @RequestMapping(method = RequestMethod.PUT,  value = "/users/{userId}/contacts/{contactId}")

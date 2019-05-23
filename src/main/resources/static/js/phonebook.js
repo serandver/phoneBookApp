@@ -2,15 +2,14 @@
 
     function getCurrentUserById(currentUserId){
         $.ajax({
-                 url: '/users/' + currentUserId,
-                 type: 'GET',
-                 success: function (rp) {
-                     return rp;
-                 }
-             });
+             url: '/users/' + currentUserId,
+             type: 'GET',
+             success: function (rp) {
+                 return rp;
+             }
+        });
     }
     var currentUserId = $('#currentUserId').val();
-    var currentUser = getCurrentUserById(currentUserId);
 
     function getAllContactsForSelectedUser(currentUserId){
         $.ajax({
@@ -67,7 +66,6 @@
             homePhoneNumber:$("#editHomePhoneNumber").val(),
             address:$("#editAddress").val(),
             email: $("#editInputEmail").val(),
-            user: currentUser
         };
 
         $.ajax({
@@ -104,7 +102,6 @@
             homePhoneNumber:$("#homePhoneNumber").val(),
             address:$("#address").val(),
             email: $("#inputEmail").val(),
-            user: currentUser
         };
 
         $.ajax({
