@@ -19,7 +19,7 @@
                 for (var i = 0; i < rp.length; i++) {
                     $(".table-striped > tbody").append(
                         "<tr>"+
-                        "<td>"+rp[i].contactId+"</td>"+
+                        "<td style=\"visibility:collapse;\">"+rp[i].contactId+"</td>"+
                         "<td>"+rp[i].firstName+"</td>"+
                         "<td>"+rp[i].lastName+"</td>"+
                         "<td>"+rp[i].patronymic+"</td>"+
@@ -27,8 +27,8 @@
                         "<td>"+rp[i].homePhoneNumber+"</td>"+
                         "<td>"+rp[i].address+"</td>"+
                         "<td>"+rp[i].email+"</td>"+
-                        "<td><button class=\"btn btn-success btn-sm edit-modal\" data-toggle=\"modal\" data-target=\"#editModal\" contenteditable=\"false\">Edit</button></td>"+
-                        "<td><button class=\"btn btn-success btn-sm delete\">Delete</button></td>"+
+                        "<td><button class=\"btn btn-success btn-sm edit-modal\" data-toggle=\"modal\" data-target=\"#editModal\" contenteditable=\"false\" th:text=\"#{phonebook.button.edit}\">Edit</button></td>"+
+                        "<td><button class=\"btn btn-success btn-sm delete\" th:text=\"#{phonebook.button.delete}\">Delete</button></td>"+
                         "/tr>");
                 }
             }

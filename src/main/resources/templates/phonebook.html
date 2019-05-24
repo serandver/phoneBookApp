@@ -11,7 +11,7 @@
     <meta name="author" content=""/>
     <link rel="icon" href="../static/favicon.ico"/>
 
-    <title>Phonebook application</title>
+    <title th:text="#{phonebook.page.title}">Phone book application</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
@@ -26,10 +26,10 @@
     <div class="collapse navbar-collapse" id="navbarsExample09">
         <ul class="navbar-nav mr-auto"></ul>
         <form class="form-inline my-2 my-md-0">
-            <p class="navbar-brand navbar-left">Welcome, <span sec:authentication="principal.username"> User.</span></p>
+            <p class="navbar-brand navbar-left" th:text="#{phonebook.welcome}">Welcome, <span sec:authentication="principal.username"> User.</span></p>
             <input class="form-control" type="text" placeholder="Search" aria-label="Search">
             <input id="currentUserId" type="hidden" th:value="${session.userId}">
-            <button type="submit"  class="btn btn-link btn-logout" formaction="/logout" >Logout</button>
+            <button type="submit"  class="btn btn-link btn-logout" formaction="/logout" th:text="#{phonebook.logout}">Logout</button>
         </form>
     </div>
 </nav>
@@ -43,8 +43,6 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
-                                class="sr-only">Close</span></button>
                         <h4 class="modal-title" id="myModalLabel">Please add new contact</h4>
                     </div>
                     <div class="modal-body">
@@ -98,18 +96,10 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"
-                                                                                       class="">×   </span><span
-                                class="sr-only">Close</span>
-                        </button>
                         <h4 class="modal-title" id="editModalLabel">Please edit contact</h4>
                     </div>
                     <div class="modal-body">
                         <form role="form" id="editContactForm">
-                            <div class="form-group">
-                                <label for="contactId">№</label>
-                                <p class="form-control-static" id="contactId"></p>
-                            </div>
                             <div class="form-group">
                                 <label for="editFirstName">First name</label>
                                 <input type="text" class="form-control" id="editFirstName"/>
@@ -152,9 +142,9 @@
         <!-- End modal #editModal-->
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h2 class="sub-header text-center">My contacts</h2>
+            <h2 class="sub-header text-center" th:text="#{phonebook.page.header}">My contacts</h2>
             <div class="col-sm-3 col-md-2">
-                <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#addModal">
+                <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#addModal"  th:text="#{phonebook.button.new.contact}">
                     Add new contact
                 </button>
             </div>
@@ -162,14 +152,14 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>№</th>
-                        <th>First name</th>
-                        <th>Last name</th>
-                        <th>Patrynomic</th>
-                        <th>Mobile phone number</th>
-                        <th>Home phone number</th>
-                        <th>Address</th>
-                        <th>email</th>
+                        <th></th>
+                        <th th:text="#{phonebook.table.firstname}">First name</th>
+                        <th th:text="#{phonebook.table.lastname}">Last name</th>
+                        <th th:text="#{phonebook.table.patrynomic}">Patrynomic</th>
+                        <th th:text="#{phonebook.table.mobile.phone}">Mobile phone number</th>
+                        <th th:text="#{phonebook.table.home.phone}">Home phone number</th>
+                        <th th:text="#{phonebook.table.address}">Address</th>
+                        <th th:text="#{phonebook.table.email}">email</th>
                         <th></th>
                         <th></th>
                     </tr>
