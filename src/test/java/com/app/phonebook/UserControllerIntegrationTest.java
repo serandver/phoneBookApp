@@ -3,7 +3,6 @@ package com.app.phonebook;
 import com.app.phonebook.controller.ContactCrudController;
 import com.app.phonebook.controller.UserCrudController;
 import com.app.phonebook.model.User;
-import com.app.phonebook.repository.PasswordResetTokenRepository;
 import com.app.phonebook.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,9 +1,7 @@
 package com.app.phonebook;
 
 import com.app.phonebook.model.User;
-import com.app.phonebook.repository.PasswordResetTokenRepository;
 import com.app.phonebook.repository.UserRepository;
-import com.app.phonebook.repository.VerificationTokenRepository;
 import com.app.phonebook.service.UserService;
 import com.app.phonebook.service.impl.UserServiceImpl;
 import org.junit.Before;
