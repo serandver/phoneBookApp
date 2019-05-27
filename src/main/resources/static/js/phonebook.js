@@ -1,14 +1,15 @@
 (function (){
 
-    // hardcoded value of current user
-    var currentUser = {
-        userId: 1,
-        userName: "userLogin 1",
-        password: "userPassword 1",
-        fio: "userNameAndSurname 1"
-    };
-
-    var currentUserId = currentUser.userId;
+    function getCurrentUserById(currentUserId){
+        $.ajax({
+             url: '/users/' + currentUserId,
+             type: 'GET',
+             success: function (rp) {
+                 return rp;
+             }
+        });
+    }
+    var currentUserId = $('#currentUserId').val();
 
     function getAllContactsForSelectedUser(currentUserId){
         $.ajax({
@@ -18,7 +19,7 @@
                 for (var i = 0; i < rp.length; i++) {
                     $(".table-striped > tbody").append(
                         "<tr>"+
-                        "<td>"+rp[i].contactId+"</td>"+
+                        "<td style=\"visibility:collapse;\">"+rp[i].contactId+"</td>"+
                         "<td>"+rp[i].firstName+"</td>"+
                         "<td>"+rp[i].lastName+"</td>"+
                         "<td>"+rp[i].patronymic+"</td>"+
@@ -26,8 +27,8 @@
                         "<td>"+rp[i].homePhoneNumber+"</td>"+
                         "<td>"+rp[i].address+"</td>"+
                         "<td>"+rp[i].email+"</td>"+
-                        "<td><button class=\"btn btn-success btn-sm edit-modal\" data-toggle=\"modal\" data-target=\"#editModal\" contenteditable=\"false\">Edit</button></td>"+
-                        "<td><button class=\"btn btn-success btn-sm delete\">Delete</button></td>"+
+                        "<td><button class=\"btn btn-success btn-sm edit-modal\" data-toggle=\"modal\" data-target=\"#editModal\" contenteditable=\"false\" th:text=\"#{phonebook.button.edit}\">Edit</button></td>"+
+                        "<td><button class=\"btn btn-success btn-sm delete\" th:text=\"#{phonebook.button.delete}\">Delete</button></td>"+
                         "/tr>");
                 }
             }
@@ -65,7 +66,6 @@
             homePhoneNumber:$("#editHomePhoneNumber").val(),
             address:$("#editAddress").val(),
             email: $("#editInputEmail").val(),
-            user: currentUser
         };
 
         $.ajax({
@@ -102,7 +102,6 @@
             homePhoneNumber:$("#homePhoneNumber").val(),
             address:$("#address").val(),
             email: $("#inputEmail").val(),
-            user: currentUser
         };
 
         $.ajax({

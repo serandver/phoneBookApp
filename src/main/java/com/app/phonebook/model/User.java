@@ -1,38 +1,33 @@
 package com.app.phonebook.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
-@Builder
+@NoArgsConstructor
 @AllArgsConstructor
-@Table(name="users")
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
 
     @Id
-    @Column(unique = true, nullable = false)
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long userId;
+    private Long id;
     private String firstName;
     private String lastName;
-    private String password;
     private String email;
+    private String password;
 
-    @Column(name = "enabled")
-    private boolean enabled;
-
-    @ElementCollection
-    @CollectionTable(name="roles", joinColumns=@JoinColumn(name="userId"))
-    @Column(name="role")
-    private List<String> roles;
-
-    public User() {
-        super();
-        this.enabled = false;
-    }
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles;
 }

@@ -1,9 +1,8 @@
-package com.app.phonebook.controller;
+package com.app.phonebook.web.controller;
 
-import com.app.phonebook.dto.UserDto;
-import com.app.phonebook.exceptions.EmailExistsException;
 import com.app.phonebook.model.User;
 import com.app.phonebook.service.UserService;
+import com.app.phonebook.web.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class UserCrudController {
+public class UserController {
 
     @Autowired
     private UserService userService;
@@ -32,8 +31,8 @@ public class UserCrudController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/users")
-    public void addUser (@RequestBody UserDto userDto) throws EmailExistsException {
-        userService.registerNewUserAccount(userDto);
+    public void addUser (@RequestBody UserDto userDto) {
+        userService.addUser(userDto);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/users/{userId}")
@@ -42,8 +41,7 @@ public class UserCrudController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/users/{userId}")
-    public void deleteUser (@RequestBody UserDto userDto) {
-        userService.deleteUser(userDto);
+    public void deleteUser (@PathVariable long userId) {
+        userService.deleteUser(userId);
     }
-
 }

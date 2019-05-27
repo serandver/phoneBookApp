@@ -1,7 +1,9 @@
-package com.app.phonebook.controller;
+package com.app.phonebook.web.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
 
 @Controller
 public class ViewController {
@@ -11,28 +13,18 @@ public class ViewController {
         return "index";
     }
 
-    @GetMapping(value = "/login")
-    public String getSignInPage(){
+    @GetMapping("/login")
+    public String getSignInPage(Model model){
         return "login";
     }
 
-    @GetMapping(value = "/signup")
-    public String getSignUpPage(){
-        return "signup";
-    }
-
-    @GetMapping(value = {"/phonebook"})
+    @GetMapping("/phonebook")
     public String getContacts(){
         return "phonebook";
     }
 
-    @GetMapping(value="/admin")
+    @GetMapping("/admin")
     public String admin(){
         return "admin";
-    }
-
-    @GetMapping(value="/403")
-    public String Error403(){
-        return "403";
     }
 }
