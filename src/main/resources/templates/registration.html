@@ -16,6 +16,11 @@
             <div th:if="${param.success}">
                 <div class="alert alert-info">You've successfully registered to our awesome app!</div>
             </div>
+            <div th:if="${param.success}">
+                <ul class="nav nav-pills pull-right">
+                    <li role="presentation" class="active"><a th:href="@{/login}" th:text="#{index.signin}">Sign in</a></li>
+                </ul>
+            </div>
             <h1 th:text="#{registration.title}">Registration</h1>
             <form th:action="@{/registration}" th:object="${user}" class="was-validated" method="post" th:classappend="${#fields.hasGlobalErrors()}? 'has-error':''">
 

@@ -2,6 +2,7 @@ package com.app.phonebook.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Builder
 public class User {
 
     @Id
